@@ -181,8 +181,7 @@ export async function generateRoasts(
   stats: ProfileStats,
   intensity: RoastIntensity = "medium"
 ): Promise<string[]> {
-  const { user, repos, topLanguages, totalStars, accountAge, commitPattern } =
-    stats;
+  const { user, topLanguages, totalStars, accountAge, commitPattern } = stats;
 
   // Format language data
   const languages = Object.keys(topLanguages).join(", ");

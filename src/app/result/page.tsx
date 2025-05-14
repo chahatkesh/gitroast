@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { ProfileStats, RoastIntensity, RoastResult } from "@/lib/types";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,7 +17,8 @@ import {
 import { toPng } from "html-to-image";
 import Image from "next/image";
 
-export default function ResultPage() {
+// Component that uses search params
+function ResultContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const username = searchParams.get("username") || "";
@@ -450,5 +451,20 @@ export default function ResultPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Default export with Suspense boundary
+export default function ResultPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center px-4 py-16">
+          <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
+          <p className="text-lg font-medium text-zinc-300">Loading...</p>
+        </div>
+      }>
+      <ResultContent />
+    </Suspense>
   );
 }
