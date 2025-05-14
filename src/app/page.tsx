@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Loader2, AlertCircle } from "lucide-react";
+import { Github, Loader2, AlertCircle, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -11,6 +11,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [visitorCount, setVisitorCount] = useState<number | null>(null);
 
   useEffect(() => {
     // Clear error when username changes
@@ -18,6 +19,23 @@ export default function Home() {
       setError("");
     }
   }, [username, error]);
+
+  useEffect(() => {
+    // Fetch visitor count when component mounts
+    const fetchVisitorCount = async () => {
+      try {
+        const response = await fetch("/api/visitors");
+        if (response.ok) {
+          const data = await response.json();
+          setVisitorCount(data.count);
+        }
+      } catch (error) {
+        console.error("Failed to fetch visitor count:", error);
+      }
+    };
+
+    fetchVisitorCount();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -213,6 +231,29 @@ export default function Home() {
                     )}
                   </motion.button>
                 </form>
+              </div>
+            </motion.div>
+
+            {/* Visitor counter */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.6 }}
+              className="mt-12 flex justify-center">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-800/50 border border-zinc-700">
+                <Users className="h-4 w-4 text-orange-500" />
+                <span className="text-sm text-zinc-300">
+                  {visitorCount !== null ? (
+                    <>
+                      <span className="text-orange-400 font-bold">
+                        {visitorCount.toLocaleString()}
+                      </span>{" "}
+                      visitors roasted
+                    </>
+                  ) : (
+                    <span className="text-zinc-500">Loading visitors...</span>
+                  )}
+                </span>
               </div>
             </motion.div>
           </div>
