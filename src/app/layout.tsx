@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "Get your GitHub profile roasted with AI-powered humor. Because sometimes your commit history needs a reality check.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.png",
   },
 };
 
