@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   Loader2,
   Download,
-  Share2,
   Calendar,
   Code,
   Users,
@@ -130,15 +129,23 @@ function ResultContent() {
   const shareOnTwitter = () => {
     if (!roastResult) return;
 
-    const text = `I just got my GitHub profile roasted by GitRoast! "${roastResult.roasts[0]}" Check yours at:`;
-    const url = `${
-      process.env.NEXT_PUBLIC_APP_URL || "https://gitroast.vercel.app"
-    }/result?username=${username}`;
+    // Get a random roast from the results for more variety in shares
+    const randomRoastIndex = Math.floor(
+      Math.random() * roastResult.roasts.length
+    );
+    const selectedRoast = roastResult.roasts[randomRoastIndex];
+
+    // Add trending developer hashtags to increase visibility
+    const hashtags = "GitRoast,DevMemes,CodeLife";
+
+    // Create more viral tweet text with emojis and engaging language
+    const text = `🔥 My GitHub profile just got DESTROYED by GitRoast 💀\n\n"${selectedRoast}"\n\nSavage AI roasts for devs:`;
+    const url = `https://gitroast.vercel.app\n\n`;
 
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         text
-      )}&url=${encodeURIComponent(url)}`,
+      )}&url=${encodeURIComponent(url)}&hashtags=${hashtags}`,
       "_blank"
     );
   };
@@ -297,18 +304,27 @@ function ResultContent() {
               </div>
             </div>
 
-            {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => router.push("/")}
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/70 px-4 py-2.5 font-medium text-zinc-300 shadow-md hover:bg-zinc-700/70 hover:text-white transition-all duration-200">
-                <Github className="h-4 w-4" />
-                Try Another Username
-              </button>
+            {/* Enhanced Action buttons */}
+            <div className="flex flex-col gap-3">
+              <div className="flex sm:flex-row gap-3">
+                <button
+                  onClick={() => router.push("/")}
+                  className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800/70 px-4 py-2.5 font-medium text-zinc-300 shadow-md hover:bg-zinc-700/70 hover:text-white transition-all duration-200">
+                  <Github className="h-4 w-4" />
+                  Try Another Username
+                </button>
+              </div>
+
+              {/* Twitter Share button */}
               <button
                 onClick={shareOnTwitter}
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-zinc-800 px-4 py-2.5 font-medium text-white shadow-md hover:bg-zinc-700 transform hover:-translate-y-1 transition-all duration-200 border border-zinc-700">
-                <Share2 className="h-4 w-4" />
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#1DA1F2]/10 hover:bg-[#1DA1F2]/20 px-4 py-3 text-[#1DA1F2] font-medium border border-[#1DA1F2]/20 hover:border-[#1DA1F2]/30 transform hover:-translate-y-1 transition-all duration-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 fill-current">
+                  <path d="M24 4.557a9.83 9.83 0 01-2.828.775 4.932 4.932 0 002.165-2.724 9.864 9.864 0 01-3.127 1.195 4.916 4.916 0 00-8.38 4.482A13.978 13.978 0 011.67 3.15a4.93 4.93 0 001.52 6.574 4.903 4.903 0 01-2.23-.616v.061a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 14-7.497 14-13.986 0-.21 0-.42-.015-.63A9.936 9.936 0 0024 4.59v-.033z" />
+                </svg>
                 Share on Twitter
               </button>
             </div>
@@ -336,16 +352,24 @@ function ResultContent() {
               <div className="px-4 lg:px-12">
                 <div
                   id="roast-card"
-                  className="rounded-xl border border-zinc-700/50 bg-zinc-900 bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 shadow-2xl relative overflow-hidden">
-                  {/* Decorative elements */}
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-500/20 to-red-500/30 blur-xl rounded-full transform -translate-x-10 -translate-y-10"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-orange-500/10 to-red-500/20 blur-xl rounded-full transform translate-x-5 translate-y-5"></div>
+                  className="rounded-xl border-2 border-zinc-700/80 bg-zinc-900 bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 shadow-2xl relative overflow-hidden">
+                  {/* Enhanced decorative elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/30 to-red-500/40 blur-xl rounded-full transform -translate-x-5 -translate-y-5"></div>
+                  <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-orange-500/20 to-red-500/30 blur-xl rounded-full transform translate-x-5 translate-y-5"></div>
+                  <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-tr from-blue-500/10 to-purple-500/10 blur-xl rounded-full"></div>
+
+                  {/* Meme-style watermark */}
+                  <div className="absolute top-5 right-8 rotate-12 opacity-10 pointer-events-none">
+                    <p className="text-5xl font-extrabold text-white">
+                      SPICY AF 🔥
+                    </p>
+                  </div>
 
                   <div className="relative">
-                    {/* Header with GitHub user info */}
+                    {/* Enhanced header with GitHub user info */}
                     <div className="mb-6 flex items-center justify-between">
                       <div className="flex items-center">
-                        <div className="relative mr-4 h-12 w-12 overflow-hidden rounded-full border-2 border-orange-500/50">
+                        <div className="relative mr-4 h-14 w-14 overflow-hidden rounded-full border-3 border-orange-500/70 shadow-lg shadow-orange-500/20">
                           <Image
                             src={profileStats.user.avatar_url}
                             alt={`${username}'s avatar`}
@@ -354,27 +378,59 @@ function ResultContent() {
                           />
                         </div>
                         <div>
-                          <p className="font-bold text-white text-lg">
+                          <p className="font-extrabold text-white text-xl bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-300">
                             {profileStats.user.name || username}
                           </p>
-                          <p className="text-sm text-zinc-400">@{username}</p>
+                          <p className="text-sm font-medium text-zinc-400">
+                            @{username}
+                          </p>
                         </div>
-                      </div>
-                      <div className="bg-gradient-to-r from-red-600/20 to-orange-600/20 px-3 py-1 rounded-full">
-                        <p className="text-right text-sm text-orange-500 font-medium">
-                          SPICY ROAST 🔥
-                        </p>
                       </div>
                     </div>
 
-                    {/* Roast content */}
-                    <div className="space-y-4 mb-6">
+                    {/* Enhanced meme-style roast content */}
+                    <div className="space-y-5 mb-6">
                       {roastResult?.roasts.map((roast, index) => (
-                        <blockquote
+                        <div
                           key={index}
-                          className="border-l-4 border-orange-500 pl-4 py-2 bg-zinc-800/30 rounded-r-lg">
-                          <p className="font-mono text-zinc-200">{roast}</p>
-                        </blockquote>
+                          className="transform hover:scale-[1.01] transition-all">
+                          <div className="relative">
+                            {/* Emojis based on index */}
+                            <span className="absolute -left-2 -top-2 z-10 text-lg">
+                              {
+                                [
+                                  "💀", // skull
+                                  "🔥", // fire
+                                  "💣", // bomb
+                                  "☠️", // skull and crossbones
+                                ][index % 4]
+                              }
+                            </span>
+
+                            <blockquote
+                              className={`
+                              border-l-4 border-orange-500 pl-4 py-3 
+                              ${
+                                index % 2 === 0
+                                  ? "bg-gradient-to-r from-zinc-800/50 to-zinc-800/30"
+                                  : "bg-gradient-to-r from-zinc-800/40 to-zinc-800/20"
+                              } 
+                              rounded-r-lg shadow-md relative overflow-hidden group
+                            `}>
+                              {/* Background pattern for visual interest */}
+                              <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_center,_#fff_0.5px,_transparent_1px)] bg-[length:10px_10px]"></div>
+
+                              <p className="font-mono text-zinc-200 font-medium relative z-10">
+                                {roast}
+                              </p>
+
+                              {/* Subtle icon indicator */}
+                              <div className="absolute right-2 bottom-1 opacity-20 text-xs">
+                                #roast{index + 1}
+                              </div>
+                            </blockquote>
+                          </div>
+                        </div>
                       )) || (
                         <p className="text-zinc-400">
                           No roasts generated yet. Please wait a moment...
@@ -406,16 +462,36 @@ function ResultContent() {
                       </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between">
-                      <div className="flex items-center">
-                        <span className="text-orange-500 font-bold mr-1">
-                          Git
-                        </span>
-                        <span className="text-red-500 font-bold">Roast</span>
+                    {/* Enhanced meme-style footer */}
+                    <div className="mt-6 pt-4 border-t-2 border-dashed border-zinc-800/70 flex flex-col">
+                      <div className="flex items-center justify-center mb-3">
+                        <p className="text-center font-bold tracking-tight text-zinc-400 italic text-sm px-8 py-1 bg-zinc-800/30 rounded-full transform -rotate-1">
+                          &ldquo;Tragic code, epic roasts.&rdquo;
+                        </p>
                       </div>
-                      <div className="text-right text-xs text-zinc-500">
-                        gitroast.vercel.app • {new Date().toLocaleDateString()}
+
+                      <div className="flex items-center justify-between">
+                        {/* Logo */}
+                        <div className="flex items-center">
+                          <div className="flex items-center  p-1 rounded-md shadow-inner">
+                            <span className="text-orange-500 font-extrabold text-lg mr-0.5">
+                              Git
+                            </span>
+                            <span className="text-red-500 font-extrabold text-lg">
+                              Roast
+                            </span>
+                            <span className="text-orange-500 ml-0.5">🔥</span>
+                          </div>
+                        </div>
+
+                        {/* QR code placeholder and date */}
+                        <div className="text-right">
+                          <div className="flex items-center gap-2">
+                            <p className="text-xs text-zinc-400 font-mono">
+                              {new Date().toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -423,15 +499,29 @@ function ResultContent() {
               </div>
             )}
 
-            {/* Download button positioned at bottom of right column */}
+            {/* Enhanced Download button positioned at bottom of right column */}
             <div className="mt-4 px-4 lg:px-12">
               <button
                 onClick={downloadAsImage}
-                className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-600 to-red-600 px-6 py-3 font-medium text-white shadow-lg hover:from-orange-700 hover:to-red-700 transform hover:-translate-y-1 transition-all duration-200">
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-600 to-red-600 px-6 py-3 font-medium text-white shadow-lg hover:from-orange-700 hover:to-red-700 transform hover:-translate-y-1 transition-all duration-200 relative overflow-hidden group">
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-orange-600/0 via-white/30 to-orange-600/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
                 <Download className="h-5 w-5" />
-                Download as Image
+                <span className="relative z-10">
+                  Download Meme-worthy Roast
+                </span>
               </button>
+              <p className="text-center text-zinc-500 text-xs mt-2">
+                Perfect for sharing on Slack, Discord & dev forums
+              </p>
             </div>
+
+            <style jsx>{`
+              @keyframes shimmer {
+                100% {
+                  transform: translateX(100%);
+                }
+              }
+            `}</style>
           </div>
         </div>
 
