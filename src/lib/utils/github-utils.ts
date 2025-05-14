@@ -215,34 +215,35 @@ SUBJECT'S GITHUB STATS:
 - Commit frequency: ${commitPattern}
 - Stars received: ${totalStars}
 
-Create 3-4 absolutely HILARIOUS tech roasts (1-3 sentences each) using contemporary developer slang, memes, and references. Mix technical observations with creative exaggeration for maximum comedy. 
+CREATE EXACTLY 4 SHORT ROASTS. Each roast MUST BE 1-2 LINES MAX - absolutely no more than 2 lines per roast. Number them 1-4.
 
 ROASTING ANGLES:
-- Ridiculous comparisons between their code output and famous tech disasters
 - Repo quantity vs quality ("404 quality not found")
-- Over/under engineering stereotypes based on their languages
-- "Works on my machine" syndrome for inconsistent committers
+- Language choices as personality flaws
 - Follower ratio compared to their code quality
-- Language choices as personality flaws ("Of course you code in X, that explains everything")
-- Excessive commits as compensation for something else
-- Sparse commits as "proof" they're outsourcing to StackOverflow
-- Documentation habits (or the lack thereof)
+- Commit patterns (too many/too few)
+- Stars count vs. actual code quality
+- Account age vs. visible progress
 
 ROAST INTENSITY: ${intensity.toUpperCase()}. ${
     intensity === "spicy"
-      ? "Be absolutely savage but clever - channel a mix of tech conference heckler and disappointed senior dev. Make the audience GASP then laugh."
+      ? "Be savage but clever - short, sharp burns that hit hard."
       : intensity === "mild"
-      ? "Light teasing with a supportive undertone - like a friend gently mocking your coding style while still respecting you."
-      : "Standard roasting - balance between savage burns and good-natured teasing. Make them laugh at themselves."
+      ? "Light teasing with a supportive undertone - playful jabs."
+      : "Standard roasting - balance between burns and teasing."
   }
 
-Ensure each roast contains:
-1. Specific references to their actual GitHub data
-2. Creative exaggeration for humor
-3. At least one programming joke or tech culture reference
-4. A dash of absurdity that still feels technically relevant
+REQUIREMENTS FOR EACH ROAST:
+1. MUST reference specific GitHub data from their profile
+2. MUST include developer humor/tech reference
+3. MUST be exactly 1-2 lines (no more!)
+4. MUST be funny enough to share with colleagues
 
-Make these roasts so funny and on-point that the developer would WANT to share them with colleagues. Keep it JUST professional enough to share at work, but edgy enough to make people laugh out loud.`;
+FORMATTING:
+1. [First roast - exactly 1-2 lines]
+2. [Second roast - exactly 1-2 lines]
+3. [Third roast - exactly 1-2 lines]
+4. [Fourth roast - exactly 1-2 lines]`;
 
   try {
     const response = await openai.chat.completions.create({
@@ -261,14 +262,32 @@ Make these roasts so funny and on-point that the developer would WANT to share t
 
     // Parse the response text into separate roasts
     const roastText = response.choices[0].message.content || "";
-    const roasts = roastText
+    let roasts = roastText
       .split(/\d+\.\s+/) // Split by numbered list format
       .filter((line) => line.trim().length > 0)
       .map((line) => line.trim());
 
-    return roasts.length > 0
-      ? roasts
-      : ["Your GitHub profile is so unique it left our AI speechless!"];
+    // Ensure we have exactly 4 roasts
+    if (roasts.length === 0) {
+      roasts = ["Your GitHub profile is so unique it left our AI speechless!"];
+    }
+
+    // Always return exactly 4 roasts, either trimming excess or adding defaults if needed
+    if (roasts.length > 4) {
+      roasts = roasts.slice(0, 4);
+    } else
+      while (roasts.length < 4) {
+        roasts.push(
+          "Your code is like a mystery box - nobody knows what's inside, including you."
+        );
+      }
+
+    // Ensure each roast is concise (trim if over 150 chars)
+    roasts = roasts.map((roast) =>
+      roast.length > 150 ? roast.substring(0, 147) + "..." : roast
+    );
+
+    return roasts;
   } catch (error) {
     console.error("Error generating roasts:", error);
     // Handle rate limiting specifically

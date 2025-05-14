@@ -169,7 +169,7 @@ function ResultContent() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col">
+    <div className="min-h-screen bg-zinc-950 flex flex-col pb-16">
       {/* Background effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -178,11 +178,11 @@ function ResultContent() {
       </div>
 
       {/* Main content container with max height */}
-      <div className="container relative mx-auto px-4 py-8 flex-1 flex flex-col h-screen">
-        {/* Main two-column layout that fills available space */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 overflow-hidden">
+      <div className="container relative mx-auto px-4 py-8 flex flex-col">
+        {/* Main two-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left column - User profile & expanded stats */}
-          <div className="lg:col-span-5 flex flex-col overflow-y-auto pb-4 space-y-6">
+          <div className="lg:col-span-5 flex flex-col pb-4 space-y-6">
             <div className="mb-6 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="relative h-16 w-16 mr-4">
@@ -315,8 +315,8 @@ function ResultContent() {
           </div>
 
           {/* Right column - Roast card */}
-          <div className="lg:col-span-7 flex flex-col justify-start overflow-hidden">
-            <div className="mb-4 flex items-center">
+          <div className="lg:col-span-7 flex flex-col">
+            <div className="mb-4 flex items-center px-4 lg:px-8">
               <h2 className="text-2xl font-bold text-left bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500">
                 Your GitHub Roast
               </h2>
@@ -328,15 +328,15 @@ function ResultContent() {
             </div>
 
             {isGenerating ? (
-              <div className="flex flex-col items-center justify-center flex-1 py-8">
+              <div className="flex flex-col items-center justify-center py-16 my-4 mx-4 lg:mx-12 border border-zinc-700/50 rounded-xl bg-zinc-900">
                 <Loader2 className="mb-4 h-10 w-10 animate-spin text-orange-500" />
                 <p className="text-zinc-300">Generating roasts...</p>
               </div>
             ) : (
-              <div className="flex-1 overflow-y-auto">
+              <div className="px-4 lg:px-12">
                 <div
                   id="roast-card"
-                  className="rounded-xl border border-zinc-700/50 bg-zinc-900 bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 shadow-2xl relative overflow-hidden h-full">
+                  className="rounded-xl border border-zinc-700/50 bg-zinc-900 bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 shadow-2xl relative overflow-hidden">
                   {/* Decorative elements */}
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-500/20 to-red-500/30 blur-xl rounded-full transform -translate-x-10 -translate-y-10"></div>
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-orange-500/10 to-red-500/20 blur-xl rounded-full transform translate-x-5 translate-y-5"></div>
@@ -372,7 +372,7 @@ function ResultContent() {
                       {roastResult?.roasts.map((roast, index) => (
                         <blockquote
                           key={index}
-                          className="border-l-4 border-orange-500 pl-4 py-1">
+                          className="border-l-4 border-orange-500 pl-4 py-2 bg-zinc-800/30 rounded-r-lg">
                           <p className="font-mono text-zinc-200">{roast}</p>
                         </blockquote>
                       )) || (
@@ -424,7 +424,7 @@ function ResultContent() {
             )}
 
             {/* Download button positioned at bottom of right column */}
-            <div className="mt-4">
+            <div className="mt-4 px-4 lg:px-12">
               <button
                 onClick={downloadAsImage}
                 className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-600 to-red-600 px-6 py-3 font-medium text-white shadow-lg hover:from-orange-700 hover:to-red-700 transform hover:-translate-y-1 transition-all duration-200">
