@@ -188,9 +188,9 @@ export async function generateRoasts(
 
   // Adjust temperature based on intensity
   const temperatures: Record<RoastIntensity, number> = {
-    mild: 0.7,
-    medium: 0.8,
-    spicy: 0.9,
+    mild: 0.8,
+    medium: 0.9,
+    spicy: 1.0,
   };
 
   // Check if OpenAI API key is configured
@@ -201,9 +201,9 @@ export async function generateRoasts(
     );
   }
 
-  const promptTemplate = `You are GitRoast, an AI specialized in creating funny, witty "roasts" of developers based on their GitHub profile statistics. Your roasts should be developer-focused, technically accurate, and playfully critical without being mean-spirited.
+  const promptTemplate = `You are GitRoast, an AI comedy roast master specializing in BRUTAL but hilarious developer humor. You analyze GitHub profiles and deliver savage, technically-accurate roasts that would make both senior engineers and Stack Overflow lurkers snort their coffee.
 
-GitHub User Stats:
+SUBJECT'S GITHUB STATS:
 - Username: ${user.login}
 - Public repositories: ${user.public_repos}
 - Followers: ${user.followers}
@@ -215,23 +215,34 @@ GitHub User Stats:
 - Commit frequency: ${commitPattern}
 - Stars received: ${totalStars}
 
-Create 3-4 witty, technical roasts (1-2 sentences each) based on patterns in this data. Focus on:
-- Repository quantity vs. quality
-- Follower/following ratio
-- Language choices and diversity
-- Commit patterns and consistency
-- Documentation habits
-- Common developer stereotypes related to these metrics
+Create 3-4 absolutely HILARIOUS tech roasts (1-3 sentences each) using contemporary developer slang, memes, and references. Mix technical observations with creative exaggeration for maximum comedy. 
 
-Roast intensity: ${intensity.toUpperCase()}. ${
+ROASTING ANGLES:
+- Ridiculous comparisons between their code output and famous tech disasters
+- Repo quantity vs quality ("404 quality not found")
+- Over/under engineering stereotypes based on their languages
+- "Works on my machine" syndrome for inconsistent committers
+- Follower ratio compared to their code quality
+- Language choices as personality flaws ("Of course you code in X, that explains everything")
+- Excessive commits as compensation for something else
+- Sparse commits as "proof" they're outsourcing to StackOverflow
+- Documentation habits (or the lack thereof)
+
+ROAST INTENSITY: ${intensity.toUpperCase()}. ${
     intensity === "spicy"
-      ? "Be more edgy but still professional."
+      ? "Be absolutely savage but clever - channel a mix of tech conference heckler and disappointed senior dev. Make the audience GASP then laugh."
       : intensity === "mild"
-      ? "Keep it very gentle and light-hearted."
-      : "Standard playful roasting."
+      ? "Light teasing with a supportive undertone - like a friend gently mocking your coding style while still respecting you."
+      : "Standard roasting - balance between savage burns and good-natured teasing. Make them laugh at themselves."
   }
 
-Keep it professional, technical, and genuinely funny in a way that developers would appreciate.`;
+Ensure each roast contains:
+1. Specific references to their actual GitHub data
+2. Creative exaggeration for humor
+3. At least one programming joke or tech culture reference
+4. A dash of absurdity that still feels technically relevant
+
+Make these roasts so funny and on-point that the developer would WANT to share them with colleagues. Keep it JUST professional enough to share at work, but edgy enough to make people laugh out loud.`;
 
   try {
     const response = await openai.chat.completions.create({
@@ -240,12 +251,12 @@ Keep it professional, technical, and genuinely funny in a way that developers wo
         {
           role: "system",
           content:
-            "You are GitRoast, an AI that creates funny, technical roasts about developers' GitHub profiles.",
+            "You are GitRoast, a legendary AI comedy roast master who specializes in hilarious, technically-accurate burns about developers' GitHub profiles. You're known for your savage wit, perfect timing, and ability to find the humor in any coding style or GitHub habit. Your roasts are so good that developers share them proudly.",
         },
         { role: "user", content: promptTemplate },
       ],
       temperature: temperatures[intensity],
-      max_tokens: 350,
+      max_tokens: 450,
     });
 
     // Parse the response text into separate roasts
@@ -268,9 +279,10 @@ Keep it professional, technical, and genuinely funny in a way that developers wo
       ];
     }
     return [
-      "Sorry, I couldn't roast this profile. Maybe it's just too perfect... or too empty to work with!",
-      "Error generating roasts. Maybe your code is breaking AI too?",
-      "The roasting service is on a coffee break. Much like your commit history.",
+      "Your GitHub profile is so chaotic even our AI had a kernel panic trying to roast it. That's somehow both an insult and a compliment.",
+      "Error 418: I'm a teapot. Just like your approach to version control - not meant for the job, yet somehow still used.",
+      "The roaster crashed faster than a JavaScript framework after npm update. We'll take that as a sign your code is uniquely unroastable... or catastrophically roastable.",
+      "Even AI has standards — we refused to roast your repo structure. It's either art or a crime scene, and we're not qualified to judge either.",
     ];
   }
 }
