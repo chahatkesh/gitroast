@@ -293,21 +293,7 @@ export default function ResultPage({
                   })}
               </div>
             </div>
-            {/* Additional GitHub stats/info */}
-            <div className="grid grid-cols-2 gap-3">
-              {profileStats.user.location && (
-                <div className="bg-zinc-900/40 border border-zinc-800 rounded-lg p-3">
-                  <p className="text-xs text-zinc-500 mb-1">Location</p>
-                  <p className="text-zinc-300">{profileStats.user.location}</p>
-                </div>
-              )}
-              {profileStats.user.company && (
-                <div className="bg-zinc-900/40 border border-zinc-800 rounded-lg p-3">
-                  <p className="text-xs text-zinc-500 mb-1">Company</p>
-                  <p className="text-zinc-300">{profileStats.user.company}</p>
-                </div>
-              )}
-            </div>
+
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
