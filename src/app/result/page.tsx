@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ProfileStats, RoastIntensity, RoastResult } from "@/lib/types";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Loader2,
   Download,
@@ -12,20 +12,15 @@ import {
   Code,
   Users,
   Star,
-  Clock,
-  TrendingUp,
   Github,
 } from "lucide-react";
 import { toPng } from "html-to-image";
 import Image from "next/image";
 
-export default function ResultPage({
-  searchParams,
-}: {
-  searchParams: { username: string };
-}) {
+export default function ResultPage() {
   const router = useRouter();
-  const { username } = searchParams;
+  const searchParams = useSearchParams();
+  const username = searchParams.get("username") || "";
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [profileStats, setProfileStats] = useState<ProfileStats | null>(null);
@@ -91,7 +86,14 @@ export default function ResultPage({
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Failed to generate roasts");
+        // Handle specific error status codes
+        if (response.status === 429) {
+          throw new Error("Rate limit exceeded. Please try again in a moment.");
+        } else if (response.status === 500 && data.error.includes("API")) {
+          throw new Error("API configuration issue. Please try again later.");
+        } else {
+          throw new Error(data.error || "Failed to generate roasts");
+        }
       }
 
       const result = await response.json();
@@ -270,7 +272,7 @@ export default function ResultPage({
               <div className="space-y-2">
                 {Object.entries(profileStats.topLanguages)
                   .slice(0, 5)
-                  .map(([lang, count], index) => {
+                  .map(([lang, count]) => {
                     // Calculate percentage for bar width
                     const maxCount = Math.max(
                       ...Object.values(profileStats.topLanguages)

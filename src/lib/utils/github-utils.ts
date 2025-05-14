@@ -1,12 +1,30 @@
 import { GitHubRepo, GitHubUser, ProfileStats, RoastIntensity } from "../types";
 import OpenAI from "openai";
+import { config } from "./config";
 
 const GITHUB_API_URL = "https://api.github.com";
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize OpenAI client with proper error handling
+let openai: OpenAI;
+
+try {
+  openai = new OpenAI({
+    apiKey: config.openaiApiKey,
+    dangerouslyAllowBrowser: false, // Prevent client-side usage
+  });
+} catch (error) {
+  console.error("Failed to initialize OpenAI client:", error);
+  // Create a placeholder that will throw clear errors if used without proper setup
+  openai = {
+    chat: {
+      completions: {
+        create: () => {
+          throw new Error("OpenAI API client not properly initialized");
+        },
+      },
+    },
+  } as unknown as OpenAI;
+}
 
 // Fetch GitHub user data
 export async function fetchGitHubUser(username: string): Promise<GitHubUser> {
@@ -15,10 +33,8 @@ export async function fetchGitHubUser(username: string): Promise<GitHubUser> {
   };
 
   // Only add Authorization header if we have a valid token
-  // (token that doesn't look like a placeholder)
-  const token = process.env.GITHUB_TOKEN;
-  if (token && token !== "your_github_token_here" && !token.includes("_")) {
-    headers.Authorization = `token ${token}`;
+  if (config.isGitHubTokenConfigured()) {
+    headers.Authorization = `token ${config.githubToken}`;
   }
 
   const response = await fetch(`${GITHUB_API_URL}/users/${username}`, {
@@ -51,9 +67,8 @@ export async function fetchUserRepos(username: string): Promise<GitHubRepo[]> {
   };
 
   // Only add Authorization header if we have a valid token
-  const token = process.env.GITHUB_TOKEN;
-  if (token && token !== "your_github_token_here" && !token.includes("_")) {
-    headers.Authorization = `token ${token}`;
+  if (config.isGitHubTokenConfigured()) {
+    headers.Authorization = `token ${config.githubToken}`;
   }
 
   const response = await fetch(
@@ -173,11 +188,19 @@ export async function generateRoasts(
   const languages = Object.keys(topLanguages).join(", ");
 
   // Adjust temperature based on intensity
-  const temperatures = {
+  const temperatures: Record<RoastIntensity, number> = {
     mild: 0.7,
     medium: 0.8,
     spicy: 0.9,
   };
+
+  // Check if OpenAI API key is configured
+  if (!config.isOpenAIConfigured()) {
+    console.error("OpenAI API key is not properly configured");
+    throw new Error(
+      "OpenAI API key is not properly configured. Please check your environment variables."
+    );
+  }
 
   const promptTemplate = `You are GitRoast, an AI specialized in creating funny, witty "roasts" of developers based on their GitHub profile statistics. Your roasts should be developer-focused, technically accurate, and playfully critical without being mean-spirited.
 
@@ -233,9 +256,18 @@ Keep it professional, technical, and genuinely funny in a way that developers wo
       .filter((line) => line.trim().length > 0)
       .map((line) => line.trim());
 
-    return roasts;
+    return roasts.length > 0
+      ? roasts
+      : ["Your GitHub profile is so unique it left our AI speechless!"];
   } catch (error) {
     console.error("Error generating roasts:", error);
+    // Handle rate limiting specifically
+    if (error instanceof Error && error.message.includes("rate limit")) {
+      return [
+        "Our roasting service is rate limited at the moment. Please try again later.",
+        "Even our AI needs a break sometimes. Try again in a moment.",
+      ];
+    }
     return [
       "Sorry, I couldn't roast this profile. Maybe it's just too perfect... or too empty to work with!",
       "Error generating roasts. Maybe your code is breaking AI too?",

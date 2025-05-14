@@ -19,7 +19,7 @@ export default function Home() {
     }
   }, [username, error]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username.trim()) {

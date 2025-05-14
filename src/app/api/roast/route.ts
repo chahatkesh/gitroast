@@ -6,6 +6,19 @@ export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
   try {
+    // Check for OpenAI API key first using the config utility
+    const { config } = await import("@/lib/utils/config");
+    if (!config.isOpenAIConfigured()) {
+      console.error("OpenAI API key is not properly configured");
+      return NextResponse.json(
+        {
+          error:
+            "OpenAI API is not configured properly. Please check server configuration.",
+        },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { stats, intensity = "medium" } = body;
 
@@ -41,11 +54,28 @@ export async function POST(request: NextRequest) {
     };
 
     return NextResponse.json(result);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error generating roasts:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to generate roasts" },
-      { status: 500 }
-    );
+
+    // Specific error handling for different error types
+    let status = 500;
+    let message = "Failed to generate roasts";
+
+    if (error instanceof Error) {
+      message = error.message;
+
+      // Handle API key issues
+      if (message.includes("API key")) {
+        status = 500;
+        message = "API configuration error. Please try again later.";
+      }
+      // Handle rate limiting
+      else if (message.includes("rate limit") || message.includes("429")) {
+        status = 429;
+        message = "Rate limit exceeded. Please try again later.";
+      }
+    }
+
+    return NextResponse.json({ error: message }, { status });
   }
 }
