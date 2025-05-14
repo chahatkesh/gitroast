@@ -70,15 +70,29 @@ GitRoast is a developer-focused web application that provides humorous, AI-gener
 
    # App URL (update for production)
    NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+   # MongoDB connection (required for visitor counting)
+   MONGODB_URI=your_mongodb_connection_string
+   MONGODB_DB=gitroast
    ```
 
-4. Start the development server
+4. Set up MongoDB
+
+   For the visitor counter functionality, this application uses MongoDB:
+
+   - Create a free MongoDB Atlas account at [https://www.mongodb.com/cloud/atlas/register](https://www.mongodb.com/cloud/atlas/register)
+   - Create a new cluster
+   - Click "Connect" and choose "Connect your application"
+   - Copy the connection string and replace `<username>`, `<password>`, and `<dbname>` with your values
+   - Add this connection string to your `.env.local` file as `MONGODB_URI`
+
+5. Start the development server
 
    ```bash
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## 🚀 Deployment
 
