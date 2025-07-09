@@ -4,13 +4,17 @@
 
 **Because sometimes your commit history needs a reality check.**
 
-[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-gitroast.vercel.app-FF5757?style=for-the-badge)](https://gitroast.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-gitroast.chahatkesh.me-FF5757?style=for-the-badge)](https://gitroast.chahatkesh.me/)
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai)](https://openai.com/)
 [![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![GitHub](https://img.shields.io/badge/GitHub-API-181717?style=for-the-badge&logo=github)](https://docs.github.com/en/rest)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animation-0055FF?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployment-000000?style=for-the-badge&logo=vercel)](https://vercel.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 </div>
@@ -18,6 +22,66 @@
 ## ✨ About
 
 GitRoast is a developer-focused web application that provides humorous, AI-generated "roasts" based on a user's GitHub profile statistics. The application analyzes repositories, commit patterns, language choices, and more to generate witty, tech-focused banter that developers can share with their community.
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        A[Next.js Frontend<br/>React 19 + TypeScript]
+        B[Tailwind CSS<br/>Responsive UI]
+        C[Framer Motion<br/>Animations]
+    end
+    
+    subgraph "API Layer"
+        D[Next.js API Routes<br/>Edge Runtime]
+        E[GitHub API Handler]
+        F[OpenAI API Handler]
+        G[Visitor Counter API]
+    end
+    
+    subgraph "External Services"
+        H[GitHub REST API<br/>Profile & Repo Data]
+        I[OpenAI GPT API<br/>Roast Generation]
+        J[MongoDB Atlas<br/>Visitor Analytics]
+    end
+    
+    subgraph "Features"
+        K[Profile Analysis]
+        L[AI Roast Generation]
+        M[Image Export<br/>html-to-image]
+        N[Social Sharing<br/>Twitter Integration]
+    end
+    
+    A --> D
+    B --> A
+    C --> A
+    D --> E
+    D --> F
+    D --> G
+    E --> H
+    F --> I
+    G --> J
+    D --> K
+    K --> L
+    L --> M
+    L --> N
+    
+    style A fill:#61dafb,stroke:#333,stroke-width:2px
+    style D fill:#000000,stroke:#333,stroke-width:2px,color:#fff
+    style I fill:#412991,stroke:#333,stroke-width:2px,color:#fff
+    style H fill:#181717,stroke:#333,stroke-width:2px,color:#fff
+    style J fill:#47A248,stroke:#333,stroke-width:2px,color:#fff
+```
+
+### Data Flow
+
+1. **User Input**: User enters GitHub username
+2. **Profile Fetching**: GitHub API retrieves user profile and repository data
+3. **Data Analysis**: System analyzes commit patterns, languages, and repository statistics
+4. **AI Processing**: OpenAI generates personalized roasts based on the analysis
+5. **Result Display**: Roasts are presented with visual stats and sharing options
+6. **Analytics**: Visitor data is stored in MongoDB for usage insights
 
 ## 🚀 Features
 
@@ -69,7 +133,7 @@ GitRoast is a developer-focused web application that provides humorous, AI-gener
    GITHUB_TOKEN=your_github_token_here
 
    # App URL (update for production)
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   NEXT_PUBLIC_APP_URL=https://gitroast.chahatkesh.me
 
    # MongoDB connection (required for visitor counting)
    MONGODB_URI=your_mongodb_connection_string
@@ -98,15 +162,7 @@ GitRoast is a developer-focused web application that provides humorous, AI-gener
 
 ### Live Demo
 
-**Check out the live demo at: [https://gitroast.vercel.app/](https://gitroast.vercel.app/)**
-
-### Deploy to Vercel (Recommended)
-
-The easiest way to deploy your own instance of GitRoast is using Vercel:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fchahatkesh%2Fgitroast)
-
-Don't forget to set your environment variables in the Vercel dashboard.
+**Check out the live demo at: [https://gitroast.chahatkesh.me/](https://gitroast.chahatkesh.me/)**
 
 ### Build for Production
 

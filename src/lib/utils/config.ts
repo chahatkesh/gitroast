@@ -17,7 +17,7 @@ export const config = {
   /**
    * Application URL for sharing features
    */
-  appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://gitroast.vercel.app",
+  appUrl: process.env.NEXT_PUBLIC_APP_URL || "https://gitroast.chahatkesh.me",
 
   /**
    * Check if required configurations are set

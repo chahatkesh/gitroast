@@ -140,7 +140,7 @@ function ResultContent() {
 
     // Create more viral tweet text with emojis and engaging language
     const text = `🔥 My GitHub profile just got DESTROYED by GitRoast 💀\n\n"${selectedRoast}"\n\nSavage AI roasts for devs:`;
-    const url = `https://gitroast.vercel.app\n\n`;
+    const url = `https://gitroast.chahatkesh.me\n\n`;
 
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(
