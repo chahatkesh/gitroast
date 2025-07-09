@@ -1,6 +1,4 @@
-<div align="center">
-
-# 🔥 GitRoast
+# GitRoast
 
 **Because sometimes your commit history needs a reality check.**
 
@@ -12,11 +10,6 @@
 [![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![GitHub](https://img.shields.io/badge/GitHub-API-181717?style=for-the-badge&logo=github)](https://docs.github.com/en/rest)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animation-0055FF?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
-[![Vercel](https://img.shields.io/badge/Vercel-Deployment-000000?style=for-the-badge&logo=vercel)](https://vercel.com/)
-
-</div>
 
 ## ✨ About
 
@@ -66,7 +59,7 @@ graph TB
     L --> M
     L --> N
     
-    style A fill:#61dafb,stroke:#333,stroke-width:2px
+    style A fill:#000000,stroke:#333,stroke-width:2px
     style D fill:#000000,stroke:#333,stroke-width:2px,color:#fff
     style I fill:#412991,stroke:#333,stroke-width:2px,color:#fff
     style H fill:#181717,stroke:#333,stroke-width:2px,color:#fff
